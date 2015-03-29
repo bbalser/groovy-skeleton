@@ -39,23 +39,19 @@ class BowlingGameActor extends UntypedActor {
 
     def createFrames(message) {
         def calculateFrames
-        calculateFrames = { List frames, List rolls ->
+        calculateFrames = { List rolls ->
             if (!rolls) {
-                frames
+                []
             } else if (rolls[0] == 'X') {
-                frames << rolls.take(3)
-                calculateFrames(frames, rolls.drop(1))
+                [rolls.take(3)] + calculateFrames(rolls.drop(1))
             } else if (rolls[1] == '/') {
-                frames << rolls.take(3)
-                calculateFrames(frames, rolls.drop(2))
+                [rolls.take(3)] + calculateFrames(rolls.drop(2))
             } else {
-                frames << rolls.take(2)
-                calculateFrames(frames, rolls.drop(2))
+                [rolls.take(2)] + calculateFrames(rolls.drop(2))
             }
         }
 
-        def frames = []
-        calculateFrames(frames, message.toList())
+        calculateFrames(message.toList())
     }
 
 
