@@ -8,13 +8,13 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import spock.lang.Specification
 
-class GiveItBackActorTests extends Specification {
+class EchoActorTests extends Specification {
 
     def system = ActorSystem.create("TestSystem")
 
     def "using ask pattern"() {
         given:
-        def subject = TestActorRef.create(system, GiveItBackActor.create(), "GiveIt")
+        def subject = TestActorRef.create(system, EchoActor.create(), "echo")
 
         when:
         def future = Patterns.ask(subject, "Jerks", 5000)
@@ -25,7 +25,7 @@ class GiveItBackActorTests extends Specification {
 
     def "using TestProbe -- much better"() {
         given:
-        def subject = TestActorRef.create(system, GiveItBackActor.create(), "GiveIt")
+        def subject = TestActorRef.create(system, EchoActor.create(), "echo")
         JavaTestKit probe = new JavaTestKit(system)
 
         when:

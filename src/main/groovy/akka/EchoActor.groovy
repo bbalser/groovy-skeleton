@@ -3,10 +3,10 @@ package akka
 import akka.actor.Props
 import akka.actor.UntypedActor
 
-class GiveItBackActor extends UntypedActor {
+class EchoActor extends UntypedActor {
 
     static create() {
-        Props.create(GiveItBackActor)
+        Props.create(EchoActor)
     }
 
     @Override
