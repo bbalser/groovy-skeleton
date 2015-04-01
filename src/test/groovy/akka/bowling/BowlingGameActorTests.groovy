@@ -31,7 +31,7 @@ class BowlingGameActorTests extends Specification {
         1       | "-1"
         15      | "3462"
         60      | "XXX"
-        68       | "1/X7/9"
+        68      | "1/X7/9"
     }
 
 }

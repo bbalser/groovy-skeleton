@@ -8,7 +8,8 @@ import akka.routing.RoundRobinRouter
 
 class BowlingGameActor extends UntypedActor {
 
-    def frameActor = context.actorOf(new RoundRobinPool(10).props(BowlingFrameActor.create()))
+//    def frameActor = context.actorOf(new RoundRobinPool(10).props(BowlingFrameActor.create()))
+    def frameActor = context.actorOf(BowlingFrameActor.create())
     def listener
     def framesWaitingToBeScored = 0
     def score = 0

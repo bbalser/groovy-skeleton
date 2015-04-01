@@ -9,7 +9,6 @@ class BowlingFrameActor extends UntypedActor {
 
     @Override
     void onReceive(Object message) {
-        println Thread.currentThread().id + " --> " + message
         def sum = message.inject([sum: 0, previous: 0]) { acc, val ->
             def convertedValue = val == '/' ? 10 - acc.previous : rollConversions[val]
             [sum: acc.sum + convertedValue, previous: convertedValue]
