@@ -11,8 +11,6 @@ class WorldActor extends UntypedActor {
 
     Closure listener
     ActorRef map
-    ActorRef bob
-    ActorRef mary
 
     public WorldActor(Closure listener) {
         this.listener = listener
@@ -21,27 +19,32 @@ class WorldActor extends UntypedActor {
 
     @Override
     void onReceive(Object message) throws Exception {
-        switch (message) {
-            case MapActor.MapState:
-                listener.call(message)
-                break
-            case GladiatorState:
-                listener.call(message)
-                break
-            case SetPosition:
-                map.tell(message, self)
-                break
-            case MoveGladiator:
-                map.tell(message, self)
-                break
-            case CreateGladiator:
-                ActorRef gladiator = context.actorOf(GladiatorActor.create())
-                sender.tell(new CreatedGladiator(gladiator: gladiator), self)
-                break
-            default:
-                unhandled(message)
-        }
+        process(message)
+    }
 
+    def process(MapActor.MapState message) {
+        listener.call(message)
+    }
+
+    def process(GladiatorState message) {
+        listener.call(message)
+    }
+
+    def process(SetPosition message) {
+        map.tell(message, self)
+    }
+
+    def process(MoveGladiator message) {
+        map.tell(message, self)
+    }
+
+    def process(CreateGladiator message) {
+        ActorRef gladiator = context.actorOf(GladiatorActor.create())
+        sender.tell(new CreatedGladiator(gladiator: gladiator), self)
+    }
+
+    def process(message) {
+        unhandled(message)
     }
 
     public static Props create(Closure listener) {
@@ -63,8 +66,6 @@ class WorldActor extends UntypedActor {
     }
 
 }
-
-class Start {}
 
 class CreateGladiator {}
 

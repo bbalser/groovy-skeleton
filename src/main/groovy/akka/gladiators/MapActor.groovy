@@ -28,30 +28,29 @@ class MapActor extends UntypedActor {
 
     @Override
     void onReceive(Object message) throws Exception {
-        switch (message) {
-            case SetPosition:
-                set(message.x, message.y, message.gladiator)
-                break
-            case MoveGladiator:
-                move(message)
-                break
-            case GetCoordinate:
-                sender.tell(new MapCoordinate(x: message.x, y: message.y, gladiator: find(message.x, message.y)), self)
-                break
-            default:
-                unhandled(message)
-        }
-
+        process(message)
         sendState()
     }
 
-    private move(MoveGladiator message) {
+    def process(SetPosition message) {
+        set(message.x, message.y, message.gladiator)
+    }
+
+    def process(MoveGladiator message) {
         def pos = find(message.gladiator)
         if (pos) {
             def newPos = message.direction.adjust(pos.x, pos.y)
             clear(pos.x, pos.y)
             set(newPos.x, newPos.y, message.gladiator)
         }
+    }
+
+    def process(GetCoordinate message) {
+        sender.tell(new MapCoordinate(x: message.x, y: message.y, gladiator: find(message.x, message.y)), self)
+    }
+
+    def process(message) {
+        unhandled(message)
     }
 
     private clear(x, y) {

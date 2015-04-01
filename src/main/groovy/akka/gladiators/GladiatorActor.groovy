@@ -11,20 +11,22 @@ class GladiatorActor extends UntypedActor {
 
     @Override
     void onReceive(Object message) {
-        switch (message) {
-            case GetGladiatorState:
-                sender.tell(createState(), self)
-                break
-            case Attack:
-                if (message.roll >= armorClass) {
-                    hitpoints--
-                }
-                context.parent().tell(createState(), self)
-                break
-            default:
-                unhandled(message)
-        }
+        process(message)
+    }
 
+    def process(GetGladiatorState state) {
+        sender.tell(createState(), self)
+    }
+
+    def process(Attack message) {
+        if (message.roll >= armorClass) {
+            hitpoints--
+        }
+        context.parent().tell(createState(), self)
+    }
+
+    def process(message) {
+        unhandled(message)
     }
 
     GladiatorState createState() {
