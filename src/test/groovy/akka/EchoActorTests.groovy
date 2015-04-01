@@ -8,6 +8,8 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import spock.lang.Specification
 
+import java.util.concurrent.TimeUnit
+
 class EchoActorTests extends Specification {
 
     def system = ActorSystem.create("TestSystem")
@@ -20,7 +22,7 @@ class EchoActorTests extends Specification {
         def future = Patterns.ask(subject, "Jerks", 5000)
 
         then:
-        "Jerks" == Await.result(future, Duration.Zero())
+        "Jerks" == Await.result(future, Duration.create(1, TimeUnit.SECONDS))
     }
 
     def "using TestProbe -- much better"() {

@@ -3,9 +3,7 @@ package akka.gladiators
 import akka.actor.ActorRef
 import akka.actor.Props
 import akka.actor.UntypedActor
-import akka.actor.UntypedActorFactory
 import akka.japi.Creator
-import groovy.transform.Immutable
 
 class WorldActor extends UntypedActor {
 
