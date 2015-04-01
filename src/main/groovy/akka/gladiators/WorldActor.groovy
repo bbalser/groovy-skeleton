@@ -3,7 +3,9 @@ package akka.gladiators
 import akka.actor.ActorRef
 import akka.actor.Props
 import akka.actor.UntypedActor
+import akka.actor.UntypedActorFactory
 import akka.japi.Creator
+import groovy.transform.Immutable
 
 class WorldActor extends UntypedActor {
 
@@ -14,7 +16,7 @@ class WorldActor extends UntypedActor {
 
     public WorldActor(Closure listener) {
         this.listener = listener
-//        map = context.actorOf(MapActor.create())
+        map = context.actorOf(MapActor.create())
     }
 
     @Override
@@ -29,6 +31,15 @@ class WorldActor extends UntypedActor {
             case SetPosition:
                 map.tell(message, self)
                 break
+            case MoveGladiator:
+                map.tell(message, self)
+                break
+            case CreateGladiator:
+                ActorRef gladiator = context.actorOf(GladiatorActor.create())
+                sender.tell(new CreatedGladiator(gladiator: gladiator), self)
+                break
+            default:
+                unhandled(message)
         }
 
     }
@@ -54,3 +65,10 @@ class WorldActor extends UntypedActor {
 }
 
 class Start {}
+
+class CreateGladiator {}
+
+class CreatedGladiator {
+    ActorRef gladiator
+}
+

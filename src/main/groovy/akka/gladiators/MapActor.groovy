@@ -3,6 +3,7 @@ package akka.gladiators
 import akka.actor.ActorRef
 import akka.actor.Props
 import akka.actor.UntypedActor
+import groovy.transform.Immutable
 
 class MapActor extends UntypedActor {
 
@@ -37,6 +38,8 @@ class MapActor extends UntypedActor {
             case GetCoordinate:
                 sender.tell(new MapCoordinate(x: message.x, y: message.y, gladiator: find(message.x, message.y)), self)
                 break
+            default:
+                unhandled(message)
         }
 
         sendState()

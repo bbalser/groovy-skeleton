@@ -37,13 +37,31 @@ class GladiatorActorTests extends Specification {
         10 == messages[0].armorClass
     }
 
-    def "removes 1 hit point when attacked successfully"() {
+    def "removes 1 hit point when attack roll is greater than armor class"() {
         when:
         subject.tell(new Attack(roll: 11), probe.ref)
         Object[] messages = parent.receiveN(1)
 
         then:
         9 == messages[0].hitpoints
+    }
+
+    def "removes 1 hit point when attack roll is even with armor class"() {
+        when:
+        subject.tell(new Attack(roll: 11), probe.ref)
+        Object[] messages = parent.receiveN(1)
+
+        then:
+        9 == messages[0].hitpoints
+    }
+
+    def "does not remove any hitpoints when attack roll is less than armor class"() {
+        when:
+        subject.tell(new Attack(roll: 9), probe.ref)
+        Object[] messages = parent.receiveN(1)
+
+        then:
+        10 == messages[0].hitpoints
     }
 
 }
